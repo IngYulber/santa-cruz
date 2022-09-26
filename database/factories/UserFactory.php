@@ -26,7 +26,7 @@ class UserFactory extends Factory
         static $password;
 
         return [
-            'name' => $this->faker->name(),
+            'username' => $this->faker->username(),
             'nombre' => $this->faker->name(),
             'apellido' => $this->faker->lastName(),
             'dni' => '72843884',
