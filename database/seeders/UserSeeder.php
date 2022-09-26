@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         $admin = User::factory([
-            'name' => 'admin',
+            'username' => 'admin',
             'nombre' => 'John Yulber',
             'apellido' => 'Inga Lapa',
             'dni' => '72843884'

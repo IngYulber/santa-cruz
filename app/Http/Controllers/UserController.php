@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Http\Requests\UserRequest;
+use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Request;
-use App\Models\Cotizacion;
 
 class UserController extends Controller
 {
@@ -14,9 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $cotizaciones = Cotizacion::all();
 
-        return JsonResource::collection($cotizaciones);
     }
 
     /**
@@ -35,9 +35,10 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        //
+        $user = User::create($request->validated());
+
     }
 
     /**
@@ -83,5 +84,9 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function logout(){
+        return view('login');
     }
 }

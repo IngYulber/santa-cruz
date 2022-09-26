@@ -1,24 +1,12 @@
  <!-- Topbar -->
  <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-    <!-- Sidebar Toggle (Topbar) -->
-    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-        <i class="fa fa-bars"></i>
+ <!-- Sidebar Toggler (Sidebar) -->
+ <div class="text-center d-none d-md-inline">
+    <button class="border-0" id="sidebarToggle">
+        <img width="25px" class="bg-light" height="25px" src="https://cdn-icons-png.flaticon.com/512/1243/1243926.png?w=740&t=st=1664174358~exp=1664174958~hmac=7b922b1c9a40eda6c45b1ba3ec0b9150cfcadb3fd17029c5147e789805ca024d" alt="">
     </button>
-
-    <!-- Topbar Search -->
-    <form
-        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-        <div class="input-group">
-            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                aria-label="Search" aria-describedby="basic-addon2">
-            <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
-                    <i class="fas fa-search fa-sm"></i>
-                </button>
-            </div>
-        </div>
-    </form>
+</div>
 
     <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
@@ -51,7 +39,7 @@
         <li class="nav-item dropdown no-arrow mx-1">
             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-bell fa-fw"></i>
+                <img class="img-profile" src="https://cdn-icons-png.flaticon.com/512/1255/1255656.png?w=740&t=st=1664174077~exp=1664174677~hmac=d2a95f080b0ee3d51d65703663d9126467f8e3edd284c7f26048f8ee71a3cac4" alt="">
                 <!-- Counter - Alerts -->
                 <span class="badge badge-danger badge-counter">3+</span>
             </a>
@@ -102,7 +90,7 @@
         <li class="nav-item dropdown no-arrow mx-1">
             <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-envelope fa-fw"></i>
+                <img class="img-profile" src="https://cdn-icons-png.flaticon.com/512/542/542638.png" alt="">
                 <!-- Counter - Messages -->
                 <span class="badge badge-danger badge-counter">7</span>
             </a>
@@ -170,29 +158,29 @@
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{auth()->user()->nombre .' '.auth()->user()->apellido}}</span>
                 <img class="img-profile rounded-circle"
-                    src="img/undraw_profile.svg">
+                    src="https://cdn-icons-png.flaticon.com/512/506/506185.png">
             </a>
             <!-- Dropdown - User Information -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                 aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="#">
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Profile
+                    Perfil
                 </a>
                 <a class="dropdown-item" href="#">
                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Settings
+                    Configuraciones
                 </a>
                 <a class="dropdown-item" href="#">
                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Activity Log
+                    Registro de actividades
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                <a class="dropdown-item" href="#    " data-toggle="modal" data-target="#logoutModal">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Logout
+                    Cerrar sesión
                 </a>
             </div>
         </li>

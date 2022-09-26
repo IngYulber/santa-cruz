@@ -9,7 +9,6 @@ window.Vue = require('vue').default;
 
 Vue.component('fa', FontAwesomeIcon)
 
-Vue.component('login', require('./pages/Login.vue').default)
 Vue.component('dashboard', require('./pages/Dashboard.vue').default)
 Vue.component('colaboradores', require('./pages/Colaboradores.vue').default)
 Vue.component('cobranza', require('./pages/Cobranza.vue').default)
