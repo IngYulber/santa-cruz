@@ -2,91 +2,95 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\User\CreateRequest;
+use App\Http\Requests\User\UpdateRequest;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-
+        $colaboradores = User::all();
+        return JsonResource::collection($colaboradores);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('content.colaboradores');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(UserRequest $request)
+
+    public function store(CreateRequest $request)
     {
         $user = User::create($request->validated());
-
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+
+    public function update(UpdateRequest $request)
     {
-        //
+        $user = User::where('id', $request->id)->get()->first();
+        try {
+            DB::beginTransaction();
+
+            $user->nombre = $request->nombre;
+            $user->apellido = $request->apellido;
+            $user->dni = $request->dni;
+
+            if ($user->save()) {
+                $response['status'] = 'ok';
+            } else {
+                $response['status']  = 'error';
+            }
+            echo json_encode($response);
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function status(Request $request)
+    {
+        $user = User::where('id', $request->id)->get()->first();
+        try {
+            DB::beginTransaction();
+
+            $user->estado = $request->estado;
+
+            if ($user->save()) {
+                $response['status'] = 'ok';
+            } else {
+                $response['status']  = 'error';
+            }
+            echo json_encode($response);
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
+    }
+
     public function destroy($id)
     {
         //
     }
 
-    public function logout(){
+    public function logout()
+    {
         return view('login');
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Reunion;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class ReunionController extends Controller
 {
@@ -13,7 +15,8 @@ class ReunionController extends Controller
      */
     public function index()
     {
-        //
+        $reuniones = Reunion::all();
+        return JsonResource::collection($reuniones);
     }
 
     /**
@@ -23,7 +26,7 @@ class ReunionController extends Controller
      */
     public function create()
     {
-        //
+        return view('content.reuniones');
     }
 
     /**
@@ -45,7 +48,7 @@ class ReunionController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('content.reuniones_lista');
     }
 
     /**
