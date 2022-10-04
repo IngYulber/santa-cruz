@@ -24,7 +24,7 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required',
+            'dni' => 'required',
             'password' => 'required'
         ];
     }
@@ -32,17 +32,17 @@ class LoginRequest extends FormRequest
     public function messages()
     {
         return [
-            'username.required' => 'Ingrese el usuario',
+            'dni.required' => 'Ingrese el dni',
             'password.required' => 'Ingrese la contraseña'
         ];
     }
 
     public function getCredentials(){
-        $username = $this->get('username');
+        $username = $this->get('dni');
         $password = $this->get('password');
 
         return [
-            'username' => $username,
+            'dni' => $username,
             'password' => $password
         ];
     }

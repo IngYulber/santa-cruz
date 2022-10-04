@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Inicio de sesión</title>
+    <link rel="icon" type="image/x-icon" href="https://i.pinimg.com/originals/8a/8b/50/8a8b50da2bc4afa933718061fe291520.jpg">
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
 </head>
 
@@ -40,8 +41,8 @@
                                             @endif
                                             <div class="form-group">
                                                 <input type="text" class="form-control form-control-user"
-                                                    id="exampleInputEmail" name="username" aria-describedby="emailHelp"
-                                                    placeholder="Usuario">
+                                                    id="exampleInputEmail" name="dni" aria-describedby="emailHelp"
+                                                    placeholder="DNI">
                                             </div>
                                             <div class="form-group">
                                                 <input type="password" class="form-control form-control-user"
@@ -71,6 +72,5 @@
 
         </div>
     </div>
-    <script src="{{ asset('js/app.js')}}"></script>
 </body>
 </html>

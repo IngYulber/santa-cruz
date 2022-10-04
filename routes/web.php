@@ -3,6 +3,7 @@
 use App\Http\Controllers\CotizacionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ReunionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -29,10 +30,32 @@ Route::group(['middleware' => ['auth']], function(){
 
     Route::group(['prefix' => 'colaboradores'], function () {
         Route::get('/', [UserController::class, 'create'])->name('create');
+        Route::get('/list', [UserController::class, 'index'])->name('list');
         Route::post('/store', [UserController::class, 'store'])->name('store');
+        Route::post('/update', [UserController::class, 'update'])->name('update');
+        Route::post('/status', [UserController::class, 'status'])->name('status');
     });
 
     Route::group(['prefix' => 'cobranza'], function () {
+        Route::get('/', [CotizacionController::class, 'create'])->name('create');
+        Route::get('/list', [CotizacionController::class, 'index'])->name('list');
+        Route::post('/store', [CotizacionController::class, 'store'])->name('store');
+    });
+
+    Route::group(['prefix' => 'reuniones'], function () {
+        Route::get('/', [ReunionController::class, 'create'])->name('create');
+        Route::get('/list', [ReunionController::class, 'index'])->name('list');
+        Route::get('/{id}', [ReunionController::class, 'show'])->name('detail');
+        Route::post('/store', [ReunionController::class, 'store'])->name('store');
+    });
+
+    Route::group(['prefix' => 'sanciones'], function () {
+        Route::get('/', [CotizacionController::class, 'create'])->name('create');
+        Route::get('/list', [CotizacionController::class, 'index'])->name('list');
+        Route::post('/store', [CotizacionController::class, 'store'])->name('store');
+    });
+
+    Route::group(['prefix' => 'notificaciones'], function () {
         Route::get('/', [CotizacionController::class, 'create'])->name('create');
         Route::get('/list', [CotizacionController::class, 'index'])->name('list');
         Route::post('/store', [CotizacionController::class, 'store'])->name('store');

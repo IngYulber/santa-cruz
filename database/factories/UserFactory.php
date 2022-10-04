@@ -26,11 +26,10 @@ class UserFactory extends Factory
         static $password;
 
         return [
-            'username' => $this->faker->username(),
             'nombre' => $this->faker->name(),
             'apellido' => $this->faker->lastName(),
             'dni' => '72843884',
-            'password' => $password ?: $password = bcrypt('secret'),
+            'password' => 'secret',
             'remember_token' => Str::random(10),
         ];
     }

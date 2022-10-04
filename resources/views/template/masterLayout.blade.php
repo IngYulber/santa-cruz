@@ -6,21 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title') - Santa cruz</title>
     <link
-    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-    rel="stylesheet">
-
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+    <link rel="icon" type="image/x-icon"
+        href="https://i.pinimg.com/originals/8a/8b/50/8a8b50da2bc4afa933718061fe291520.jpg">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 
 <body id="page-top">
     <div id="wrapper">
-       @include('template.sidebar')
+        @include('template.sidebar')
 
         <div id="content-wrapper" class="d-flex flex-column">
             <div id="content">
-                @include('template.navbar')
-                <div id="app" class="container-fluid">
-                    @yield('content')
+                <div id="app">
+                    <navbar-component></navbar-component>
+                    <div class="container-fluid">
+                        @yield('content')
+                    </div>
                 </div>
             </div>
 
@@ -52,7 +55,7 @@
                 <div class="modal-body">Seleccionar "Cerar sesión" si realmente quiere terminar con su sesión.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                    <a class="btn btn-primary" href="{{url('logout')}}">Cerrar sesión</a>
+                    <a class="btn btn-primary" href="{{ url('logout') }}">Cerrar sesión</a>
                 </div>
             </div>
         </div>

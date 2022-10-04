@@ -14,20 +14,32 @@
     <!-- Nav Item - Dashboard -->
     <li class="nav-item active">
         <a class="nav-link" href="{{url('panel')}}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Panel</span></a>
     </li>
 
     <li class="nav-item active">
         <a class="nav-link" href="{{url('colaboradores')}}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Colaboradores</span></a>
     </li>
 
     <li class="nav-item active">
-        <a class="nav-link" href="{{url('cobranza')}}">
-            <i class="fas fa-fw fa-tachometer-alt"></i>
+        <a class="nav-link"  href="{{url('cobranza')}}">
             <span>Cobranza</span></a>
+    </li>
+
+    <li class="nav-item active">
+        <a class="nav-link"  href="{{url('reuniones')}}">
+            <span>Reuniones</span></a>
+    </li>
+
+    <li class="nav-item active">
+        <a class="nav-link"  href="{{url('sanciones')}}">
+            <span>Sanciones</span></a>
+    </li>
+
+    <li class="nav-item active">
+        <a class="nav-link"  href="{{url('notificaciones')}}">
+            <span>Notificaciones</span></a>
     </li>
 
 </ul>
