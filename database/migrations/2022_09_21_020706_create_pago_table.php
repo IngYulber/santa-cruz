@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateReunionTable extends Migration
+class CreatePagoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateReunionTable extends Migration
      */
     public function up()
     {
-        Schema::create('reunion', function (Blueprint $table) {
+        Schema::create('pago', function (Blueprint $table) {
             $table->id();
-            $table->string('description');
-            $table->dateTime('fecha_programada');
-            $table->json('asuntos');
+            $table->date('fecha_inicio');
+            $table->date('fecha_fin');
+            $table->enum('estado',['Deudas pendientes','Sin deudas']);
+            $table->decimal('monto', $precision = 8, $scale = 2);
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateReunionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reunion');
+        Schema::dropIfExists('pago');
     }
 }

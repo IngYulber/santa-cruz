@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCotizacionTable extends Migration
+class CreateDetallePagosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateCotizacionTable extends Migration
      */
     public function up()
     {
-        Schema::create('cotizacion', function (Blueprint $table) {
+        Schema::create('detalle_pagos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_usuario')->references('id')->on('users')->constrained();
-            $table->year('año');
-            $table->enum('estado',['asistio','falto','tardanza']);
+            $table->foreignId('id_colaborador')->references('id')->on('users')->constrained();
+            $table->foreignId('id_pago')->references('id')->on('pago')->constrained();
+            $table->boolean('estado')->default(0);
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateCotizacionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cotizacion');
+        Schema::dropIfExists('detalle_pagos');
     }
 }

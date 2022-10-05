@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\CotizacionController;
+use App\Http\Controllers\PagoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ReunionController;
@@ -37,9 +37,11 @@ Route::group(['middleware' => ['auth']], function(){
     });
 
     Route::group(['prefix' => 'cobranza'], function () {
-        Route::get('/', [CotizacionController::class, 'create'])->name('create');
-        Route::get('/list', [CotizacionController::class, 'index'])->name('list');
-        Route::post('/store', [CotizacionController::class, 'store'])->name('store');
+        Route::get('/', [PagoController::class, 'create'])->name('create');
+        Route::get('/list', [PagoController::class, 'index'])->name('list');
+        Route::get('/{id}', [PagoController::class, 'show'])->name('detail');
+        Route::get('/{id}/list', [PagoController::class, 'showDetail'])->name('show-detail');
+        Route::post('/store', [PagoController::class, 'store'])->name('store');
     });
 
     Route::group(['prefix' => 'reuniones'], function () {
@@ -50,15 +52,15 @@ Route::group(['middleware' => ['auth']], function(){
     });
 
     Route::group(['prefix' => 'sanciones'], function () {
-        Route::get('/', [CotizacionController::class, 'create'])->name('create');
-        Route::get('/list', [CotizacionController::class, 'index'])->name('list');
-        Route::post('/store', [CotizacionController::class, 'store'])->name('store');
+        Route::get('/', [PagoController::class, 'create'])->name('create');
+        Route::get('/list', [PagoController::class, 'index'])->name('list');
+        Route::post('/store', [PagoController::class, 'store'])->name('store');
     });
 
     Route::group(['prefix' => 'notificaciones'], function () {
-        Route::get('/', [CotizacionController::class, 'create'])->name('create');
-        Route::get('/list', [CotizacionController::class, 'index'])->name('list');
-        Route::post('/store', [CotizacionController::class, 'store'])->name('store');
+        Route::get('/', [PagoController::class, 'create'])->name('create');
+        Route::get('/list', [PagoController::class, 'index'])->name('list');
+        Route::post('/store', [PagoController::class, 'store'])->name('store');
     });
 
 });
