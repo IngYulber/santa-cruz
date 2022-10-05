@@ -28,9 +28,13 @@ class LoginController extends Controller
 
         $user = Auth::getProvider()->retrieveByCredentials($credentials);
 
-        Auth::login($user);
+        if($user->estado == 'habilitado'){
+            Auth::login($user);
+            return $this->authenticated($request, $user);
+        }else{
+            return redirect()->to('/')->withErrors('Usuario suspendido');
+        }
 
-        return $this->authenticated($request, $user);
     }
 
     public function authenticated(Request $request, $user){

@@ -247,9 +247,9 @@ export default {
       } else if (this.opcion_modal == 2) {
         mensaje = "Colaborador actualizado correctamente";
       } else if (this.opcion_modal == 3) {
-        mensaje = "Colaborador activado correctamente";
-      } else {
         mensaje = "Colaborador desactivado correctamente";
+      } else {
+        mensaje = "Colaborador activado correctamente";
       }
       this.$swal.fire({
         position: "top-end",

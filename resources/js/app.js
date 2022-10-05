@@ -24,6 +24,7 @@ Vue.component('navbar-component', require('./components/Navbar.vue').default)
 Vue.component('dashboard', require('./pages/Dashboard.vue').default)
 Vue.component('colaboradores', require('./pages/Colaboradores.vue').default)
 Vue.component('cobranza', require('./pages/Cobranza.vue').default)
+Vue.component('cobranza-detalle', require('./pages/Cobranza_Detalle.vue').default)
 Vue.component('reuniones', require('./pages/Reuniones.vue').default)
 Vue.component('reuniones-lista', require('./pages/Reuniones_Lista.vue').default)
 

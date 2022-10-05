@@ -19,7 +19,6 @@ class ReunionSeeder extends Seeder
         ];
 
         DB::table('reunion')->insert([
-            'id_creador ' => 1,
             'description' => 'Reunion de emergencia',
             'fecha_programada' => now(),
             'asuntos' => json_encode($asunto)
