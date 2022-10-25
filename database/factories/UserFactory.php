@@ -28,7 +28,6 @@ class UserFactory extends Factory
         return [
             'nombre' => $this->faker->name(),
             'apellido' => $this->faker->lastName(),
-            'dni' => '72843884',
             'password' => 'secret',
             'remember_token' => Str::random(10),
         ];

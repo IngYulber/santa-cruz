@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Page Heading -->
-    <h1 class="h3 mb-2 text-gray-800">Detalle del monto a cobrar</h1>
+    <h1 class="h3 mb-2 text-gray-800">Colabodores a cobrar</h1>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
       <div class="card-body">
@@ -23,15 +23,18 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="pago in pagos" v-bind:key="pago.id">
-                <td>{{ pago.id }}</td>
-                <td v-if="pago.estado">{{ pago.fecha_inicio | moment("DD/MM/YYYY") }}</td>
-                <td v-else>******</td>
-                <td>{{ pago.nombre +' '+pago.apellido}}</td>
+              <tr v-for="(pago, index) in pagos" v-bind:key="index">
+                <td>{{ index + 1 }}</td>
+                <td v-if="pago.estado">
+                  {{ pago.updated_at | moment("DD/MM/YYYY") }}
+                </td>
+                <td v-else>Pendiente</td>
+                <td>{{ pago.nombre + " " + pago.apellido }}</td>
                 <td>{{ pago.monto }}</td>
-                <td>{{ pago.estado == 0 ? 'Pendiente':'Cancelado' }}</td>
-                <td class="text-center">
+                <td>{{ pago.estado == 0 ? "Pendiente" : "Cancelado" }}</td>
+                <td v-if="pago.estado == 0" class="text-center">
                   <button
+                    @click="cancelarPago(pago.id, pago.nombre, pago.apellido)"
                     data-toggle="tooltip"
                     title="Registrar pago"
                     class="btn btn-success btn-circle btn-sm"
@@ -52,23 +55,19 @@
 export default {
   props: {
     id_pago: {
-      type: String,
+      type: Number,
       required: true,
     },
   },
   data() {
     return {
-      pagos: [],
       loader: false,
-      formulario: {},
-      errores: {},
-      opcion_modal: 1,
+      pagos: [],
     };
   },
 
   mounted() {
     this.listarDetallePagos();
-    this.iniciarFormulario();
   },
 
   methods: {
@@ -78,87 +77,46 @@ export default {
       });
     },
 
-    vistaAsistencia(id) {
-      window.location.href = "cobranza/" + id;
-    },
-
-    iniciarFormulario() {
-      $("#registerModal").modal("hide");
-      this.formulario = {
-        id: "",
-        fecha_inicio: "",
-        fecha_fin: "",
-        monto: "",
-      };
+    cancelarPago(id, name, last_name) {
+      this.$swal
+        .fire({
+          icon: "warning",
+          title: "Cancelar pago de " + name + " " + last_name,
+          showCancelButton: true,
+          cancelButtonText: "Cancelar",
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Si, cancelar pago!",
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            axios
+              .post("/cobranza/update/detail/" + id)
+              .then((response) => {
+                this.listarDetallePagos();
+                this.$swal.fire({
+                  icon: "success",
+                  title: 'Pago realizado',
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }
+        });
     },
 
     listarDetallePagos: function () {
       axios
-        .get("/cobranza/"+this.id_pago+"/list")
+        .get("/cobranza/" + this.id_pago + "/list")
         .then((response) => {
           this.pagos = response.data.data;
           this.iniciarTabla();
         })
         .catch((error) => {
           console.log(error);
-        });
-    },
-
-    registrarPago: function () {
-      const formdata = new FormData();
-      formdata.append("fecha_inicio", this.formulario.fecha_inicio);
-      formdata.append("fecha_fin", this.formulario.fecha_fin);
-      formdata.append("monto", this.formulario.monto);
-
-      axios
-        .post("/cobranza/store", formdata)
-        .then((response) => {
-          this.iniciarFormulario();
-          this.listarPagos();
-          this.mostrarAlerta();
-        })
-        .catch((error) => {
-          this.errores = error.response.data.errors;
-          console.log(error.response.data);
-        });
-    },
-
-    editarColaborador: function () {
-      const formdata = new FormData();
-      formdata.append("id", this.formulario.id);
-      formdata.append("nombre", this.formulario.nombre);
-      formdata.append("apellido", this.formulario.apellido);
-      formdata.append("dni", this.formulario.dni);
-      formdata.append("estado", this.formulario.estado);
-      axios
-        .post("/colaboradores/update", formdata)
-        .then((response) => {
-          this.iniciarFormulario();
-          this.mostrarAlerta();
-        })
-        .catch((error) => {
-          console.log(error.response.data);
-        });
-    },
-
-    estadoColaborador: function (id, estado) {
-      if (estado == "habilitado") {
-        this.opcion_modal = 4;
-      } else {
-        this.opcion_modal = 3;
-      }
-      const formdata = new FormData();
-      formdata.append("id", id);
-      formdata.append("estado", estado);
-      axios
-        .post("/colaboradores/status", formdata)
-        .then((response) => {
-          this.iniciarFormulario();
-          this.mostrarAlerta();
-          this.listarColaboradores();
-        })
-        .catch((error) => {
-          console.log(error.response.data);
         });
     },
   },

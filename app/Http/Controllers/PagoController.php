@@ -7,6 +7,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\Pago;
 use App\Http\Requests\Pago\CreateRequest;
 use App\Models\DetallePago;
+use App\Models\User;
 
 class PagoController extends Controller
 {
@@ -40,7 +41,19 @@ class PagoController extends Controller
      */
     public function store(CreateRequest $request)
     {
-        $user = Pago::create($request->validated());
+        $pago = Pago::create($request->validated());
+
+        $users = User::all();
+
+        foreach ($users as $user) {
+            $detail = new DetallePago();
+            $detail->id_colaborador = $user->id;
+            $detail->id_pago = $pago->id;
+            $detail->estado = False;
+            $detail->save();
+        }
+
+
     }
 
     /**
@@ -58,8 +71,8 @@ class PagoController extends Controller
     {
         $detalle = DetallePago::join('users', 'users.id', '=', 'id_colaborador')
                                 ->join('pago', 'pago.id', '=', 'id_pago')
-                                ->where('detalle_pagos.id', $id)
-                                ->select('detalle_pagos.id','users.nombre','users.apellido','pago.monto','detalle_pagos.estado')
+                                ->where('detalle_pagos.id_pago', $id)
+                                ->select('detalle_pagos.id','users.nombre','users.apellido','pago.monto','detalle_pagos.estado','detalle_pagos.updated_at')
                                 ->get();
         return JsonResource::collection($detalle);
     }

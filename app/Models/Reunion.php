@@ -10,4 +10,6 @@ class Reunion extends Model
     use HasFactory;
 
     protected $table = 'reunion';
+
+    protected $fillable = ['description','fecha_programada','asuntos'];
 }
