@@ -8,6 +8,7 @@
         class="btn btn-primary btn-icon-split btn-sm"
         data-toggle="modal"
         data-target="#registerModal"
+        id="btn_registrar_colaborador"
       >
         <span class="icon text-white-50">
           <fa icon="plus" />
@@ -188,6 +189,7 @@
               Cancelar
             </button>
             <button
+            id="registrar_colaborador"
               v-if="opcion_modal == 1"
               @click="registrarColaborador()"
               class="btn btn-primary"

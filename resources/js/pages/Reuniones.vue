@@ -12,7 +12,7 @@
         <span class="icon text-white-50">
           <fa icon="plus" />
         </span>
-        <span class="text">Nueva reunion</span>
+        <span class="text">Nueva reunión</span>
       </button>
     </div>
     <!-- DataTales Example -->
@@ -44,7 +44,7 @@
                   <button
                   @click="abrirModal('editar',reunion)"
                     data-toggle="tooltip"
-                    title="Editar colaborador"
+                    title="Editar Reunión"
                     class="btn btn-warning btn-circle btn-sm"
                   >
                     <fa icon="edit" />
@@ -52,7 +52,7 @@
                   <button
                     @click="vistaAsistencia(reunion.id)"
                     data-toggle="tooltip"
-                    title="Activar colaborador"
+                    title="Tomar asistencia"
                     class="btn btn-success btn-circle btn-sm"
                   >
                     <fa icon="list-check" />
@@ -78,7 +78,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">
-              {{ opcion_modal == 1 ? "Registrar" : "Editar" }} reunion
+              {{ opcion_modal == 1 ? "Registrar" : "Editar" }} reunión
             </h5>
             <button
               class="close"
@@ -99,13 +99,13 @@
                       type="text"
                       :class="[
                         'form-control',
-                        errores.nombre ? 'is-invalid' : '',
+                        errores.description  ? 'is-invalid' : '',
                       ]"
-                      v-model="formulario.nombre"
+                      v-model="formulario.description"
                       id="nombre"
                     />
-                    <div v-if="errores.nombre" class="invalid-feedback">
-                      {{ errores.nombre[0] }}
+                    <div v-if="errores.description" class="invalid-feedback">
+                      {{ errores.description[0] }}
                     </div>
                   </div>
                 </div>
@@ -118,13 +118,13 @@
                       type="date"
                       :class="[
                         'form-control',
-                        errores.apellido ? 'is-invalid' : '',
+                        errores.fecha_programada ? 'is-invalid' : '',
                       ]"
-                      v-model="formulario.apellido"
+                      v-model="formulario.fecha"
                       id="apellido"
                     />
-                    <div v-if="errores.apellido" class="invalid-feedback">
-                      {{ errores.apellido[0] }}
+                    <div v-if="errores.fecha_programada" class="invalid-feedback">
+                      {{ errores.fecha_programada[0] }}
                     </div>
                   </div>
                   <div class="col-6 form-group">
@@ -133,13 +133,13 @@
                       type="time"
                       :class="[
                         'form-control',
-                        errores.apellido ? 'is-invalid' : '',
+                        errores.fecha_programada ? 'is-invalid' : '',
                       ]"
-                      v-model="formulario.apellido"
+                      v-model="formulario.hora"
                       id="apellido"
                     />
-                    <div v-if="errores.apellido" class="invalid-feedback">
-                      {{ errores.apellido[0] }}
+                    <div v-if="errores.fecha_programada" class="invalid-feedback">
+                      {{ errores.fecha_programada[0] }}
                     </div>
                   </div>
                 </div>
@@ -205,12 +205,12 @@
             </button>
             <button
               v-if="opcion_modal == 1"
-              @click="registrarColaborador()"
+              @click="registrarReunion()"
               class="btn btn-primary"
             >
               Registrar
             </button>
-            <button v-else @click="editarColaborador()" class="btn btn-warning">
+            <button v-else @click="editarReunion()" class="btn btn-warning">
               Editar
             </button>
           </div>
@@ -253,10 +253,12 @@ export default {
     iniciarFormulario() {
       $("#registerModal").modal("hide");
       this.formulario = {
-        descripcion: "",
+        id:"",
+        description: "",
         fecha: "",
         hora: "",
       };
+      this.agenda = []
     },
 
     agregarAgenda() {
@@ -279,7 +281,6 @@ export default {
         mensaje = "Reunion actualizado correctamente";
       }
       this.$swal.fire({
-        position: "top-end",
         icon: "success",
         title: mensaje,
         showConfirmButton: false,
@@ -295,6 +296,8 @@ export default {
       } else {
         this.opcion_modal = 2;
         this.formulario = reunion;
+        this.formulario.fecha = this.$moment(reunion.fecha_programada).format('YYYY-MM-DD');
+        this.formulario.hora = this.$moment(reunion.fecha_programada).format('HH:mm');
       }
       $("#registerModal").modal("show");
     },
@@ -311,20 +314,18 @@ export default {
         });
     },
 
-    registrarColaborador: function () {
+    registrarReunion: function () {
       const formdata = new FormData();
-      formdata.append("nombre", this.formulario.nombre);
-      formdata.append("apellido", this.formulario.apellido);
-      formdata.append("dni", this.formulario.dni);
-      formdata.append("password", this.formulario.contraseña);
-      formdata.append("password_confirmation", this.formulario.contraseña);
+      formdata.append("description", this.formulario.description);
+      formdata.append("fecha_programada", this.formulario.fecha +' '+ this.formulario.hora);
+      formdata.append("asuntos", JSON.stringify(this.agenda));
 
       axios
-        .post("/colaboradores/store", formdata)
+        .post("/reuniones/store", formdata)
         .then((response) => {
           this.iniciarFormulario();
-          this.listarColaboradores();
           this.mostrarAlerta();
+          this.listarReuniones();
         })
         .catch((error) => {
           this.errores = error.response.data.errors;
@@ -332,39 +333,18 @@ export default {
         });
     },
 
-    editarColaborador: function () {
+    editarReunion: function () {
       const formdata = new FormData();
       formdata.append("id", this.formulario.id);
-      formdata.append("nombre", this.formulario.nombre);
-      formdata.append("apellido", this.formulario.apellido);
-      formdata.append("dni", this.formulario.dni);
-      formdata.append("estado", this.formulario.estado);
+      formdata.append("description", this.formulario.description);
+      formdata.append("fecha_programada",this.formulario.fecha +' '+ this.formulario.hora);
+      formdata.append("asuntos", JSON.stringify(this.agenda));
       axios
-        .post("/colaboradores/update", formdata)
+        .post("/reuniones/update", formdata)
         .then((response) => {
           this.iniciarFormulario();
           this.mostrarAlerta();
-        })
-        .catch((error) => {
-          console.log(error.response.data);
-        });
-    },
-
-    estadoColaborador: function (id, estado) {
-      if (estado == "habilitado") {
-        this.opcion_modal = 4;
-      } else {
-        this.opcion_modal = 3;
-      }
-      const formdata = new FormData();
-      formdata.append("id", id);
-      formdata.append("estado", estado);
-      axios
-        .post("/colaboradores/status", formdata)
-        .then((response) => {
-          this.iniciarFormulario();
-          this.mostrarAlerta();
-          this.listarColaboradores();
+          this.listarReuniones();
         })
         .catch((error) => {
           console.log(error.response.data);

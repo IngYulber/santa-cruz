@@ -26,7 +26,7 @@
                                 <div class="col-lg-6">
                                     <div class="p-5">
                                         <div class="text-center">
-                                            <h1 class="h4 text-gray-900 mb-4">E.T.M Santa cruz de huachipa</h1>
+                                            <h1 class="h4 text-gray-900 mb-4">E.T.M. Santa Cruz de Huachipa S.A.C</h1>
                                         </div>
                                         <form class="user" method="POST" action="{{url('login')}}">
                                             @csrf

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Asistencia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AsistenciaController extends Controller
 {
@@ -50,12 +51,26 @@ class AsistenciaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Asistencia $asistencia)
+    public function update(Request $request, $id)
     {
-        $asistencia->fill($request->post())->save();
-        return response()->json([
-            'asistencia'=>$asistencia
-        ]);
+        $estado = $request->get('estado');
+        $asistencia = Asistencia::where('id', $id)->get()->first();
+        try {
+            DB::beginTransaction();
+
+            $asistencia->estado = $estado;
+
+            if ($asistencia->save()) {
+                $response['status'] = 'ok';
+            } else {
+                $response['status']  = 'error';
+            }
+            echo json_encode($response);
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
     }
 
     /**

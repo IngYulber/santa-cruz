@@ -14,22 +14,23 @@
     <div class="row">
       <!-- Earnings (Monthly) Card Example -->
       <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card border-left-primary shadow h-100">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div
-                  class="
-                    text-xs
-                    font-weight-bold
-                    text-primary text-uppercase
-                    mb-1
-                  "
+                  class="text-xs font-weight-bold text-primary text-uppercase"
                 >
-                  Earnings (Monthly)
+                  % Cuentas a cobrar
                 </div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">
-                  $40,000
+                <div class="h5 mb-0 font-weight-bold text-gray-800 pt-2">
+                  {{ por_cuentas_cobrar }}%
+                  <p class="pt-2">
+                    <small
+                      >{{ cuentas_cobrar }} de
+                      {{ total_cuentas }} cuentas</small
+                    >
+                  </p>
                 </div>
               </div>
               <div class="col-auto">
@@ -42,22 +43,17 @@
 
       <!-- Earnings (Monthly) Card Example -->
       <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-success shadow h-100 py-2">
+        <div class="card border-left-success shadow h-100">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div
-                  class="
-                    text-xs
-                    font-weight-bold
-                    text-success text-uppercase
-                    mb-1
-                  "
+                  class="text-xs font-weight-bold text-success text-uppercase"
                 >
-                  Earnings (Annual)
+                  $ Total a cobrar
                 </div>
-                <div class="h5 mb-0 font-weight-bold text-gray-800">
-                  $215,000
+                <div class="h5 mb-0 font-weight-bold text-gray-800 pt-2">
+                  S/.{{ monto_cobrar }}
                 </div>
               </div>
               <div class="col-auto">
@@ -70,33 +66,23 @@
 
       <!-- Earnings (Monthly) Card Example -->
       <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-info shadow h-100 py-2">
+        <div class="card border-left-info shadow h-100">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
                 <div
-                  class="text-xs font-weight-bold text-info text-uppercase mb-1"
+                  class="text-xs font-weight-bold text-info text-uppercase"
                 >
-                  Tasks
+                  % Deudas vencidas
                 </div>
-                <div class="row no-gutters align-items-center">
-                  <div class="col-auto">
-                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                      50%
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="progress progress-sm mr-2">
-                      <div
-                        class="progress-bar bg-info"
-                        role="progressbar"
-                        style="width: 50%"
-                        aria-valuenow="50"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      ></div>
-                    </div>
-                  </div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800 pt-2">
+                  {{ por_deudas_vencidas }}%
+                  <p class="pt-2">
+                    <small
+                      >{{ deudas_vencidas }} de
+                      {{ total_cuentas }} deudas</small
+                    >
+                  </p>
                 </div>
               </div>
               <div class="col-auto">
@@ -109,7 +95,7 @@
 
       <!-- Pending Requests Card Example -->
       <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-warning shadow h-100 py-2">
+        <div class="card border-left-warning shadow h-100">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col mr-2">
@@ -121,7 +107,7 @@
                     mb-1
                   "
                 >
-                  Pending Requests
+                  % Sancionados
                 </div>
                 <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
               </div>
@@ -454,7 +440,48 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      por_cuentas_cobrar: 0,
+      cuentas_cobrar: 0,
+      total_cuentas: 0,
+      monto_cobrar: 0,
+      deudas_vencidas: 0,
+      por_deudas_vencidas: 0,
+      errores: {},
+      opcion_modal: 1,
+      agenda: [],
+      item_agenda: "",
+    };
+  },
+  mounted() {
+    this.listarKpis();
+  },
+
+  methods: {
+    listarKpis: function () {
+      axios
+        .get("/utils/kpis")
+        .then((response) => {
+          console.log(response.data);
+          this.total_cuentas = response.data.totalCobrar;
+          this.cuentas_cobrar = response.data.cuentasCobrar;
+          this.por_cuentas_cobrar = Math.round(
+            (this.cuentas_cobrar * 100) / this.total_cuentas
+          );
+          this.monto_cobrar = response.data.montoCobrar;
+          this.deudas_vencidas = response.data.porDeudasVencidas;
+          this.por_deudas_vencidas = Math.round(
+            (this.deudas_vencidas * 100) / this.total_cuentas
+          );
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  },
+};
 </script>
 
 <style>
