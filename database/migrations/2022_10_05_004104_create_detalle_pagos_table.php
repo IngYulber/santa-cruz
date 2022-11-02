@@ -15,7 +15,7 @@ class CreateDetallePagosTable extends Migration
     {
         Schema::create('detalle_pagos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_colaborador')->references('id')->on('users')->constrained();
+            $table->foreignId('id_colaborador')->references('id')->on('colaborador')->constrained();
             $table->foreignId('id_pago')->references('id')->on('pago')->constrained();
             $table->boolean('estado')->default(0);
             $table->timestamps();

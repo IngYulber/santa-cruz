@@ -39,6 +39,7 @@
               <tr
                 v-for="colaborador in colaboradores"
                 v-bind:key="colaborador.id"
+                :class="[colaborador.estado == 'deshabilitado' ? 'bg-red' : 'bg-green']"
               >
                 <td>{{ colaborador.id }}</td>
                 <td>{{ colaborador.nombre }}</td>
@@ -159,25 +160,6 @@
                   </div>
                 </div>
               </div>
-              <div v-if="opcion_modal == 1" class="col-12">
-                <div class="row">
-                  <div class="col-12 form-group">
-                    <label for="contraseña">Contraseña:</label>
-                    <input
-                      type="password"
-                      :class="[
-                        'form-control',
-                        errores.password ? 'is-invalid' : '',
-                      ]"
-                      v-model="formulario.contraseña"
-                      id="contraseña"
-                    />
-                    <div v-if="errores.password" class="invalid-feedback">
-                      {{ errores.password[0] }}
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
           <div class="modal-footer">
@@ -189,7 +171,7 @@
               Cancelar
             </button>
             <button
-            id="registrar_colaborador"
+              id="registrar_colaborador"
               v-if="opcion_modal == 1"
               @click="registrarColaborador()"
               class="btn btn-primary"
@@ -233,7 +215,7 @@ export default {
     iniciarFormulario() {
       $("#registerModal").modal("hide");
       this.formulario = {
-        id:"",
+        id: "",
         nombre: "",
         apellido: "",
         dni: "",

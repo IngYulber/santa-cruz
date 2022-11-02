@@ -1,9 +1,17 @@
 <template>
   <div>
     <!-- Page Heading -->
-    <h1 v-if="loader" class="h3 mb-2 text-gray-800">
-      Asistencia del {{ asistencias[0].created_at | moment("DD/MM/YYYY") }}
-    </h1>
+    <div class="d-flex my-2">
+      <h1 v-if="loader" class="h3 mb-2 text-gray-800 mr-auto">
+        Asistencia del {{ asistencias[0].created_at | moment("DD/MM/YYYY") }}
+      </h1>
+      <a href="/reuniones" class="btn btn-secondary btn-sm pt-2">
+        <span class="text-white-50">
+         <fa icon="arrow-left" />
+        </span>
+        Atras
+      </a>
+    </div>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
       <div class="card-body">
@@ -26,25 +34,34 @@
             <tbody>
               <tr v-for="(asistencia, index) in asistencias" v-bind:key="index">
                 <td>{{ index + 1 }}</td>
-                <td>{{ asistencia.nombre + " " + asistencia.apellido }}</td>
+                <td>{{ asistencia.apellido + " " + asistencia.nombre }}</td>
                 <td
                   v-if="asistencia.estado != 'asistio'"
                   @click="marcarAsistencia(asistencia.id, 'asistio')"
                 />
-                <td v-else class="text-center text-success"><fa icon="check" /></td>
+                <td v-else class="text-center text-success">
+                  <fa icon="check" />
+                </td>
                 <td
                   v-if="asistencia.estado != 'falto'"
                   @click="marcarAsistencia(asistencia.id, 'falto')"
                 />
-                <td v-else class="text-center text-danger"><fa icon="check" /></td>
+                <td v-else class="text-center text-danger">
+                  <fa icon="check" />
+                </td>
                 <td
                   v-if="asistencia.estado != 'tardanza'"
                   @click="marcarAsistencia(asistencia.id, 'tardanza')"
                 />
-                <td v-else class="text-center text-warning"><fa icon="check" /></td>
+                <td v-else class="text-center text-warning">
+                  <fa icon="check" />
+                </td>
               </tr>
             </tbody>
           </table>
+          <div class="d-flex justify-content-end bg-white pt-3">
+            <button class="btn btn-primary">Cerrar asistencias</button>
+          </div>
         </div>
       </div>
     </div>
@@ -79,7 +96,7 @@ export default {
 
     marcarAsistencia(id, opcion) {
       const formdata = new FormData();
-      formdata.append('estado', opcion)
+      formdata.append("estado", opcion);
       axios
         .post("/reuniones/update/detail/" + id, formdata)
         .then((response) => {
@@ -95,7 +112,7 @@ export default {
         .get("/reuniones/" + this.id_reunion + "/list")
         .then((response) => {
           this.asistencias = response.data.data;
-          this.iniciarTabla();
+          //   this.iniciarTabla();
           this.loader = true;
         })
         .catch((error) => {

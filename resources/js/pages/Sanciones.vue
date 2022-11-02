@@ -90,10 +90,10 @@
                   <div class="col-12 form-group">
                     <label for="exampleFormControlSelect1">Colaborador</label>
                     <select
-                      v-model="formulario.id_usuario"
+                      v-model="formulario.id_colaborador"
                       :class="[
                         'form-control',
-                        errores.id_usuario ? 'is-invalid' : '',
+                        errores.id_colaborador ? 'is-invalid' : '',
                       ]"
                       id="exampleFormControlSelect1"
                     >
@@ -105,8 +105,8 @@
                         {{ colaborador.label }}
                       </option>
                     </select>
-                    <div v-if="errores.id_usuario" class="invalid-feedback">
-                      {{ errores.id_usuario[0] }}
+                    <div v-if="errores.id_colaborador" class="invalid-feedback">
+                      {{ errores.id_colaborador[0] }}
                     </div>
                   </div>
                   <div class="col-12 form-group">
@@ -222,7 +222,7 @@ export default {
       $("#registerModal").modal("hide");
       this.formulario = {
         id: "",
-        id_usuario: "",
+        id_colaborador: "",
         motivo: "",
         dias_sancion: "",
       };
@@ -284,8 +284,9 @@ export default {
     },
 
     registrarSancion: function () {
+    console.log(this.formulario.id_colaborador)
       const formdata = new FormData();
-      formdata.append("id_usuario", this.formulario.id_usuario);
+      formdata.append("id_colaborador", this.formulario.id_colaborador);
       formdata.append("motivo", this.formulario.motivo);
       formdata.append("dias_sancion", this.formulario.dias_sancion);
 
@@ -305,7 +306,7 @@ export default {
     editarSancion: function () {
       const formdata = new FormData();
       formdata.append("id", this.formulario.id);
-      formdata.append("id_usuario", this.formulario.id_usuario);
+      formdata.append("id_colaborador", this.formulario.id_colaborador);
       formdata.append("motivo", this.formulario.motivo);
       formdata.append("dias_sancion", this.formulario.dias_sancion);
       axios

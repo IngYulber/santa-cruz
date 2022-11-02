@@ -6,6 +6,7 @@ use App\Models\Asistencia;
 use App\Models\Reunion;
 use App\Models\User;
 use App\Http\Requests\Reunion\CreateRequest;
+use App\Models\Colaborador;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
@@ -43,11 +44,11 @@ class ReunionController extends Controller
     {
         $reunion = Reunion::create($request->validated());
 
-        $users = User::all();
+        $colaborador = Colaborador::all();
 
-        foreach ($users as $user) {
+        foreach ($colaborador as $user) {
             $detail = new Asistencia();
-            $detail->id_usuario  = $user->id;
+            $detail->id_colaborador  = $user->id;
             $detail->id_reunion  = $reunion->id;
             $detail->estado = 'falto';
             $detail->save();
@@ -67,10 +68,11 @@ class ReunionController extends Controller
 
     public function showDetail($id)
     {
-        $detalle = Asistencia::join('users', 'users.id', '=', 'id_usuario')
+        $detalle = Asistencia::join('colaborador', 'colaborador.id', '=', 'id_colaborador')
                                 ->join('reunion', 'reunion.id', '=', 'id_reunion')
                                 ->where('asistencia.id_reunion', $id)
-                                ->select('asistencia.id','asistencia.estado','users.nombre','users.apellido','reunion.created_at')
+                                ->select('asistencia.id','asistencia.estado','colaborador.nombre','colaborador.apellido','reunion.created_at')
+                                ->orderBy('colaborador.apellido','asc')
                                 ->get();
         return JsonResource::collection($detalle);
     }

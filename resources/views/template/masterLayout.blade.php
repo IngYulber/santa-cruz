@@ -13,34 +13,30 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 
-<body id="page-top">
-    <div id="wrapper">
-        @include('template.sidebar')
+<body id="page-top" class="sidebar-toggled">
+    <div id="app">
+        <div id="wrapper">
+            {{-- @include('template.sidebar') --}}
+            <sidebar-component></sidebar-component>
+            <div id="content-wrapper" class="d-flex flex-column">
+                <div id="content">
 
-        <div id="content-wrapper" class="d-flex flex-column">
-            <div id="content">
-                <div id="app">
                     <navbar-component></navbar-component>
                     <div class="container-fluid">
                         @yield('content')
                     </div>
                 </div>
-            </div>
 
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
+                <footer class="sticky-footer bg-white">
+                    <div class="container my-auto">
+                        <div class="copyright text-center my-auto">
+                            <span>Copyright &copy; Santa cruz 2022</span>
+                        </div>
                     </div>
-                </div>
-            </footer>
+                </footer>
+            </div>
         </div>
     </div>
-
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
     <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">

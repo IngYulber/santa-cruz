@@ -15,7 +15,7 @@ class CreateNotificacionTable extends Migration
     {
         Schema::create('notificacion', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_creador')->references('id')->on('users')->constrained();
+            $table->foreignId('id_colaborador')->references('id')->on('colaborador')->constrained();
             $table->string('titulo');
             $table->text('cuerpo');
             $table->timestamps();

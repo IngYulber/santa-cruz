@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMotoTable extends Migration
+class CreateColaboradorTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateMotoTable extends Migration
      */
     public function up()
     {
-        Schema::create('moto', function (Blueprint $table) {
+        Schema::create('colaborador', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_dueño')->references('id')->on('users')->constrained();
-            $table->string('placa')->unique();
-            $table->string('numero')->unique();
+            $table->string('nombre');
+            $table->string('apellido');
+            $table->string('dni')->unique();
+            $table->enum('estado', ['habilitado','deshabilitado','suspendido']);
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateMotoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('moto');
+        Schema::dropIfExists('colaborador');
     }
 }

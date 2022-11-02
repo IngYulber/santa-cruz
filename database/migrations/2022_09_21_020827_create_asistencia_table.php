@@ -15,7 +15,7 @@ class CreateAsistenciaTable extends Migration
     {
         Schema::create('asistencia', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_usuario')->references('id')->on('users')->constrained();
+            $table->foreignId('id_colaborador')->references('id')->on('colaborador')->constrained();
             $table->foreignId('id_reunion')->references('id')->on('reunion')->constrained();
             $table->enum('estado',['asistio','falto','tardanza']);
             $table->timestamps();

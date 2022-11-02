@@ -28,6 +28,7 @@
             <thead>
               <tr>
                 <th>ID</th>
+                <th>Descripción</th>
                 <th>Fecha inicio</th>
                 <th>Fecha fin</th>
                 <th>Monto</th>
@@ -36,12 +37,13 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="pago in pagos" v-bind:key="pago.id">
-                <td>{{ pago.id }}</td>
+              <tr v-for="(pago, index) in pagos" v-bind:key="pago.id" :class="[pago.estado == 'Deudas pendientes' ? 'bg-red' : 'bg-green' ]">
+                <td>{{ index+1 }}</td>
+                <td>{{ pago.descripcion }}</td>
                 <td>{{ pago.fecha_inicio | moment("DD/MM/YYYY") }}</td>
                 <td>{{ pago.fecha_fin | moment("DD/MM/YYYY") }}</td>
                 <td>{{ pago.monto }}</td>
-                <td>{{ pago.estado }}</td>
+                <td>{{ (pago.total2-pago.total) +'/'+pago.total2 }}</td>
                 <td class="text-center">
                   <button
                     @click="vistaAsistencia(pago.id)"
@@ -85,6 +87,25 @@
           </div>
           <div class="modal-body">
             <div class="row">
+                <div class="col-12">
+                <div class="row">
+                  <div class="col-12 form-group">
+                    <label for="fecha_inicio">Descripción:</label>
+                    <input
+                      type="text"
+                      :class="[
+                        'form-control',
+                        errores.descripcion ? 'is-invalid' : '',
+                      ]"
+                      v-model="formulario.descripcion"
+                      id="descripcion"
+                    />
+                    <div v-if="errores.descripcion" class="invalid-feedback">
+                      {{ errores.descripcion[0] }}
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div class="col-12">
                 <div class="row">
                   <div class="col-12 form-group">
@@ -201,6 +222,7 @@ export default {
       $("#registerModal").modal("hide");
       this.formulario = {
         id: "",
+        descripcion: "",
         fecha_inicio: "",
         fecha_fin: "",
         monto: "",
@@ -253,6 +275,7 @@ export default {
 
     registrarPago: function () {
       const formdata = new FormData();
+      formdata.append("descripcion", this.formulario.descripcion);
       formdata.append("fecha_inicio", this.formulario.fecha_inicio);
       formdata.append("fecha_fin", this.formulario.fecha_fin);
       formdata.append("monto", this.formulario.monto);

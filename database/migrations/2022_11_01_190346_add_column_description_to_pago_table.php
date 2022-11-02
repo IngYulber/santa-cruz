@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSancionTable extends Migration
+class AddColumnDescriptionToPagoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateSancionTable extends Migration
      */
     public function up()
     {
-        Schema::create('sancion', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('id_colaborador')->references('id')->on('colaborador')->constrained();
-            $table->string('motivo');
-            $table->timestamps();
+        Schema::table('pago', function (Blueprint $table) {
+            $table->string('descripcion');
         });
     }
 
@@ -28,6 +25,8 @@ class CreateSancionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sancion');
+        Schema::table('pago', function (Blueprint $table) {
+            $table->dropColumn('descripcion');
+        });
     }
 }

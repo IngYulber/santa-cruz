@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Colaborador;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,10 +26,7 @@ class CreateRequest extends FormRequest
         return [
             'nombre' => 'required|regex:/^[\pL\s\-]+$/u',
             'apellido' => 'required|regex:/^[\pL\s\-]+$/u',
-            'dni' => 'required|unique:users,dni|min:8|numeric',
-            'estado' => 'regex:/^[\pL\s\-]+$/u',
-            'password' => 'required|min:9999999|max:99999999999999999999',
-            'password_confirmation' => 'required|same:password',
+            'dni' => 'required|min:9999999|max:99999999999999999999|numeric',
         ];
     }
 
@@ -41,15 +38,9 @@ class CreateRequest extends FormRequest
             'apellido.required' => 'Ingrese el apellido',
             'apellido.regex' => 'El apellido solo debe tener letras',
             'dni.required' => 'Ingrese el dni',
-            'dni.unique' => 'El dni ingresado ya fue registrado',
             'dni.min' => 'El dni debe tener al menos 8 caracteres',
             'dni.max' => 'El dni debe tener como maximo 20 caracteres',
             'dni.numeric' => 'El dni debe contener solo numeros',
-            'estado.regex' => 'El estado debe contener solo letras',
-            'password.required' => 'Ingrese una contraseña',
-            'password.min' => 'La contraseña debe tener al menos 8 caracteres',
-            'password_confirmation.required' => 'Ingrese la confirmación de contraseña',
-            'password_confirmation.same' => 'Las contraseñas no coinciden',
         ];
     }
 }

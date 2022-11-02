@@ -17,8 +17,8 @@ class SancionController extends Controller
      */
     public function index()
     {
-        $sanciones = Sancion::join('users', 'users.id','=','sancion.id_usuario')
-                            ->select('sancion.id','sancion.motivo','users.nombre','users.apellido','sancion.created_at','sancion.dias_sancion','sancion.estado')
+        $sanciones = Sancion::join('colaborador', 'colaborador.id','=','sancion.id_colaborador')
+                            ->select('sancion.id','sancion.motivo','colaborador.nombre','colaborador.apellido','sancion.created_at','sancion.dias_sancion','sancion.estado')
                             ->get();
 
         return JsonResource::collection($sanciones);
@@ -83,7 +83,7 @@ class SancionController extends Controller
 
             $sancion->motivo = $request->motivo;
             $sancion->dias_sancion = $request->dias_sancion;
-            $sancion->id_usuario  = $request->id_usuario ;
+            $sancion->id_colaborador  = $request->id_colaborador ;
 
             if ($sancion->save()) {
                 $response['status'] = 'ok';

@@ -24,6 +24,7 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
+            'descripcion' => 'required',
             'fecha_inicio' => 'required|date',
             'fecha_fin' => 'required|date|after:fecha_inicio',
             'monto' => 'required|numeric'
@@ -33,6 +34,7 @@ class CreateRequest extends FormRequest
     public function messages()
     {
         return [
+            'descripcion.required' => 'Ingrese una descripción del pago',
             'fecha_inicio.required' => 'Ingrese la fecha de inicio del pago',
             'fecha_inicio.date' => 'La fecha debe ser un dia del año',
             'fecha_fin.required' => 'Ingrese la fecha de fin del pago',
