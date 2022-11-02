@@ -7,6 +7,7 @@ use App\Http\Controllers\DetallePagoController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ReunionController;
 use App\Http\Controllers\SancionController;
+use App\Http\Controllers\ColaboradorController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UtilsController;
 use App\Models\Asistencia;
@@ -38,11 +39,11 @@ Route::group(['middleware' => ['auth']], function(){
     });
 
     Route::group(['prefix' => 'colaboradores'], function () {
-        Route::get('/', [UserController::class, 'create'])->name('create');
-        Route::get('/list', [UserController::class, 'index'])->name('list');
-        Route::post('/store', [UserController::class, 'store'])->name('store');
-        Route::post('/update', [UserController::class, 'update'])->name('update');
-        Route::post('/status', [UserController::class, 'status'])->name('status');
+        Route::get('/', [ColaboradorController::class, 'create'])->name('create');
+        Route::get('/list', [ColaboradorController::class, 'index'])->name('list');
+        Route::post('/store', [ColaboradorController::class, 'store'])->name('store');
+        Route::post('/update', [ColaboradorController::class, 'update'])->name('update');
+        Route::post('/status', [ColaboradorController::class, 'status'])->name('status');
     });
 
     Route::group(['prefix' => 'cobranza'], function () {
@@ -71,10 +72,14 @@ Route::group(['middleware' => ['auth']], function(){
         Route::post('/update', [SancionController::class, 'update'])->name('update');
     });
 
-    Route::group(['prefix' => 'notificaciones'], function () {
-        Route::get('/', [PagoController::class, 'create'])->name('create');
-        Route::get('/list', [PagoController::class, 'index'])->name('list');
-        Route::post('/store', [PagoController::class, 'store'])->name('store');
+    Route::group(['prefix' => 'perfil'], function () {
+        Route::get('/', [UserController::class, 'create'])->name('create');
+        Route::get('/info', [UserController::class, 'index'])->name('list');
+        Route::post('/store', [SancionController::class, 'store'])->name('store');
+        Route::post('/update', [SancionController::class, 'update'])->name('update');
     });
 
+    Route::group(['prefix' => 'reportes'], function () {
+        Route::get('/', [UtilsController::class, 'reportesView'])->name('reportes');
+    });
 });

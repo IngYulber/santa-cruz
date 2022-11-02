@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Models\Pago;
 use App\Http\Requests\Pago\CreateRequest;
+use App\Models\Colaborador;
 use App\Models\DetallePago;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class PagoController extends Controller
 {
@@ -18,9 +20,29 @@ class PagoController extends Controller
      */
     public function index()
     {
-        $pagos = Pago::all();
+        $cuentas_deudas = DetallePago::join('pago', 'pago.id', '=', 'id_pago')
+                                    ->select('pago.*', DB::raw('COUNT(id_pago) as total'))
+                                    ->where('detalle_pagos.estado', 0)
+                                    ->groupBy('id_pago')
+                                    ->orderBy('pago.estado','asc')
+                                    ->get();
 
-        return JsonResource::collection($pagos);
+        $cuentas_deudas2 = DetallePago::join('pago', 'pago.id', '=', 'id_pago')
+                                    ->select('pago.id', DB::raw('COUNT(id_pago) as total'))
+                                    ->groupBy('id_pago')
+                                    ->orderBy('pago.estado','asc')
+                                    ->get();
+
+        foreach ($cuentas_deudas as $item) {
+            foreach($cuentas_deudas2 as $item2 ){
+                if($item["id"] == $item2["id"]){
+                    $item["total2"] = $item2["total"];
+                    break;
+                }
+            }
+        }
+
+        return JsonResource::collection($cuentas_deudas);
     }
 
     /**
@@ -43,7 +65,7 @@ class PagoController extends Controller
     {
         $pago = Pago::create($request->validated());
 
-        $users = User::all();
+        $users = Colaborador::all();
 
         foreach ($users as $user) {
             $detail = new DetallePago();
@@ -52,8 +74,6 @@ class PagoController extends Controller
             $detail->estado = False;
             $detail->save();
         }
-
-
     }
 
     /**
@@ -69,11 +89,12 @@ class PagoController extends Controller
 
     public function showDetail($id)
     {
-        $detalle = DetallePago::join('users', 'users.id', '=', 'id_colaborador')
-                                ->join('pago', 'pago.id', '=', 'id_pago')
-                                ->where('detalle_pagos.id_pago', $id)
-                                ->select('detalle_pagos.id','users.nombre','users.apellido','pago.monto','detalle_pagos.estado','detalle_pagos.updated_at')
-                                ->get();
+        $detalle = DetallePago::join('colaborador', 'colaborador.id', '=', 'id_colaborador')
+            ->join('pago', 'pago.id', '=', 'id_pago')
+            ->where('detalle_pagos.id_pago', $id)
+            ->select('detalle_pagos.id', 'colaborador.nombre', 'colaborador.apellido', 'pago.monto', 'detalle_pagos.estado', 'detalle_pagos.updated_at')
+            ->orderBy('detalle_pagos.estado', 'asc')
+            ->get();
         return JsonResource::collection($detalle);
     }
 

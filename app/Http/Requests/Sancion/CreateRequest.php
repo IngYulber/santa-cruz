@@ -25,7 +25,7 @@ class CreateRequest extends FormRequest
     {
         return [
             'motivo' => 'required|min:5',
-            'id_usuario' => 'required|exists:users,id',
+            'id_colaborador' => 'required|exists:colaborador,id',
             'dias_sancion' => 'required|numeric'
         ];
     }
@@ -35,8 +35,8 @@ class CreateRequest extends FormRequest
         return [
             'motivo.required' => 'Ingrese el motivo de la sanción',
             'motivo.min' => 'La sanción debe ser más descriptiva',
-            'id_usuario.required' => 'Seleccione un colaborador',
-            'id_usuario.exists' => 'El colaborador seleccionado no existe',
+            'id_colaborador.required' => 'Seleccione un colaborador',
+            'id_colaborador.exists' => 'El colaborador seleccionado no existe',
             'dias_sancion.required' => 'Ingrese los días de suspención',
             'dias_sancion.numeric' => 'Los días de suspencion deben ser numericos',
         ];

@@ -2,32 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\User\CreateRequest;
-use App\Http\Requests\User\UpdateRequest;
-use App\Models\User;
-use Illuminate\Http\Resources\Json\JsonResource;
+use App\Models\Colaborador;
+use App\Http\Requests\Colaborador\CreateRequest;
+use App\Http\Requests\Colaborador\UpdateRequest;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
 
-class UserController extends Controller
+class ColaboradorController extends Controller
 {
-
     public function index()
     {
-        $id = auth()->user()->id;
-        $user = User::where('id', $id)->first();
-        return ($user);
+        $colaboradores = Colaborador::all();
+        return JsonResource::collection($colaboradores);
     }
 
     public function create()
     {
-        return view('content.perfil');
+        return view('content.colaboradores');
     }
 
 
     public function store(CreateRequest $request)
     {
-        $user = User::create($request->validated());
+        $user = Colaborador::create($request->validated());
     }
 
     public function show($id)
@@ -43,7 +41,7 @@ class UserController extends Controller
 
     public function update(UpdateRequest $request)
     {
-        $user = User::where('id', $request->id)->get()->first();
+        $user = Colaborador::where('id', $request->id)->get()->first();
         try {
             DB::beginTransaction();
 
@@ -66,7 +64,7 @@ class UserController extends Controller
 
     public function status(Request $request)
     {
-        $user = User::where('id', $request->id)->get()->first();
+        $user = Colaborador::where('id', $request->id)->get()->first();
         try {
             DB::beginTransaction();
 
@@ -83,15 +81,5 @@ class UserController extends Controller
             DB::rollBack();
             throw $th;
         }
-    }
-
-    public function destroy($id)
-    {
-        //
-    }
-
-    public function logout()
-    {
-        return view('login');
     }
 }

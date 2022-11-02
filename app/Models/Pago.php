@@ -17,5 +17,5 @@ class Pago extends Model
 
     ];
 
-    protected $fillable = ['fecha_inicio','fecha_fin','monto'];
+    protected $fillable = ['fecha_inicio','fecha_fin','monto','descripcion'];
 }
