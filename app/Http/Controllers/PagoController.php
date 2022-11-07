@@ -28,7 +28,7 @@ class PagoController extends Controller
                                     ->get();
 
         $cuentas_deudas2 = DetallePago::join('pago', 'pago.id', '=', 'id_pago')
-                                    ->select('pago.id', DB::raw('COUNT(id_pago) as total'))
+                                    ->select('pago.*', DB::raw('COUNT(id_pago) as total'))
                                     ->groupBy('id_pago')
                                     ->orderBy('pago.estado','asc')
                                     ->get();
@@ -36,13 +36,13 @@ class PagoController extends Controller
         foreach ($cuentas_deudas as $item) {
             foreach($cuentas_deudas2 as $item2 ){
                 if($item["id"] == $item2["id"]){
-                    $item["total2"] = $item2["total"];
+                    $item2["total2"] = $item["total"];
                     break;
                 }
             }
         }
 
-        return JsonResource::collection($cuentas_deudas);
+        return JsonResource::collection($cuentas_deudas2);
     }
 
     /**

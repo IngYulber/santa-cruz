@@ -37,13 +37,13 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(pago, index) in pagos" v-bind:key="pago.id" :class="[pago.estado == 'Deudas pendientes' ? 'bg-red' : 'bg-green' ]">
+              <tr v-for="(pago, index) in pagos" v-bind:key="pago.id" :class="[ isNaN(pago.total2) ? 'bg-green' : 'bg-red' ]">
                 <td>{{ index+1 }}</td>
                 <td>{{ pago.descripcion }}</td>
                 <td>{{ pago.fecha_inicio | moment("DD/MM/YYYY") }}</td>
                 <td>{{ pago.fecha_fin | moment("DD/MM/YYYY") }}</td>
                 <td>{{ pago.monto }}</td>
-                <td>{{ (pago.total2-pago.total) +'/'+pago.total2 }}</td>
+                <td>{{ formatoTotal(pago.total,pago.total2)}}</td>
                 <td class="text-center">
                   <button
                     @click="vistaAsistencia(pago.id)"
@@ -216,6 +216,16 @@ export default {
 
     vistaAsistencia(id) {
       window.location.href = "cobranza/" + id;
+    },
+
+    formatoTotal(total, total2){
+        if(isNaN(total2)){
+            return total+'/'+total;
+        }else{
+            console.log(total)
+            console.log(total2)
+            return (total-total2) +'/'+total;
+        }
     },
 
     iniciarFormulario() {
