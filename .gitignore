@@ -18,7 +18,6 @@ yarn-error.log
 
 bootstrap/compiled.php
 app/storage/
-storage/*
 /.vagrant
 .phpunit.result.cache
 composer.lock
