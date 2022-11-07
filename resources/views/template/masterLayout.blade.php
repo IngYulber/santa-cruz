@@ -10,7 +10,7 @@
         rel="stylesheet">
     <link rel="icon" type="image/x-icon"
         href="https://i.pinimg.com/originals/8a/8b/50/8a8b50da2bc4afa933718061fe291520.jpg">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
 </head>
 
 <body id="page-top" class="sidebar-toggled">

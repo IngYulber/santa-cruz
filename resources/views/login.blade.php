@@ -10,9 +10,7 @@
 </head>
 
 <body class="bg-gradient-light">
-    <div id="app">
         <div class="container">
-
             <!-- Outer Row -->
             <div class="row justify-content-center">
 
@@ -71,6 +69,5 @@
             </div>
 
         </div>
-    </div>
 </body>
 </html>
