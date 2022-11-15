@@ -12,6 +12,8 @@ function mixAssetsDir(query, cb) {;
     })
 }
 
+mix.copyDirectory('resources/images', 'public/images')
+
 // script vendor js
 mixAssetsDir('js/vendor/*.js', (src, dest) => mix.scripts(src, dest))
 

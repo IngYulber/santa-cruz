@@ -32,9 +32,9 @@
         :color="'success'"
       />
       <Card
-        :kpi="'% CUENTAS A COBRAR'"
-        :title="'Cuentas'"
-        :detail="'10 cuentas cuentas'"
+        :kpi="'% CUENTAS NUEVAS'"
+        :title="'30% Cuentas nuevas este mes'"
+        :detail="'10 cuentas nuevas'"
         :color="'success'"
       />
     </div>

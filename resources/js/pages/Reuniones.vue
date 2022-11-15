@@ -42,7 +42,7 @@
                 <td>{{ reunion.fecha_programada | moment("hh:mm a") }}</td>
                 <td class="text-center">
                   <button
-                  @click="abrirModal('editar',reunion)"
+                    @click="abrirModal('editar', reunion)"
                     data-toggle="tooltip"
                     title="Editar Reunión"
                     class="btn btn-warning btn-circle btn-sm"
@@ -78,7 +78,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">
-              {{ opcion_modal == 1 ? "Registrar" : "Editar" }} reunión
+              {{ opcion_modal == 1 ? "Nueva" : "Editar" }} reunión
             </h5>
             <button
               class="close"
@@ -99,7 +99,7 @@
                       type="text"
                       :class="[
                         'form-control',
-                        errores.description  ? 'is-invalid' : '',
+                        errores.description ? 'is-invalid' : '',
                       ]"
                       v-model="formulario.description"
                       id="nombre"
@@ -123,7 +123,10 @@
                       v-model="formulario.fecha"
                       id="apellido"
                     />
-                    <div v-if="errores.fecha_programada" class="invalid-feedback">
+                    <div
+                      v-if="errores.fecha_programada"
+                      class="invalid-feedback"
+                    >
                       {{ errores.fecha_programada[0] }}
                     </div>
                   </div>
@@ -138,7 +141,10 @@
                       v-model="formulario.hora"
                       id="apellido"
                     />
-                    <div v-if="errores.fecha_programada" class="invalid-feedback">
+                    <div
+                      v-if="errores.fecha_programada"
+                      class="invalid-feedback"
+                    >
                       {{ errores.fecha_programada[0] }}
                     </div>
                   </div>
@@ -207,8 +213,15 @@
               v-if="opcion_modal == 1"
               @click="registrarReunion()"
               class="btn btn-primary"
+              :disabled="loader"
             >
-              Registrar
+              <span
+                class="spinner-border spinner-border-sm mb-1"
+                role="status"
+                aria-hidden="true"
+                v-show="loader"
+              ></span>
+              {{ loader ? "Registrando" : "Registrar" }}
             </button>
             <button v-else @click="editarReunion()" class="btn btn-warning">
               Editar
@@ -253,12 +266,12 @@ export default {
     iniciarFormulario() {
       $("#registerModal").modal("hide");
       this.formulario = {
-        id:"",
+        id: "",
         description: "",
         fecha: "",
         hora: "",
       };
-      this.agenda = []
+      this.agenda = [];
     },
 
     agregarAgenda() {
@@ -296,13 +309,17 @@ export default {
       } else {
         this.opcion_modal = 2;
         this.formulario = reunion;
-        this.formulario.fecha = this.$moment(reunion.fecha_programada).format('YYYY-MM-DD');
-        this.formulario.hora = this.$moment(reunion.fecha_programada).format('HH:mm');
+        this.formulario.fecha = this.$moment(reunion.fecha_programada).format(
+          "YYYY-MM-DD"
+        );
+        this.formulario.hora = this.$moment(reunion.fecha_programada).format(
+          "HH:mm"
+        );
       }
       $("#registerModal").modal("show");
     },
 
-    listarReuniones: function () {
+    listarReuniones: async function () {
       axios
         .get("/reuniones/list")
         .then((response) => {
@@ -315,9 +332,13 @@ export default {
     },
 
     registrarReunion: function () {
+         this.loader = true;
       const formdata = new FormData();
       formdata.append("description", this.formulario.description);
-      formdata.append("fecha_programada", this.formulario.fecha +' '+ this.formulario.hora);
+      formdata.append(
+        "fecha_programada",
+        this.formulario.fecha + " " + this.formulario.hora
+      );
       formdata.append("asuntos", JSON.stringify(this.agenda));
 
       axios
@@ -326,10 +347,12 @@ export default {
           this.iniciarFormulario();
           this.mostrarAlerta();
           this.listarReuniones();
+          this.iniciarTabla();
+           this.loader = false;
         })
         .catch((error) => {
           this.errores = error.response.data.errors;
-          console.log(error.response.data);
+           this.loader = false;
         });
     },
 
@@ -337,7 +360,10 @@ export default {
       const formdata = new FormData();
       formdata.append("id", this.formulario.id);
       formdata.append("description", this.formulario.description);
-      formdata.append("fecha_programada",this.formulario.fecha +' '+ this.formulario.hora);
+      formdata.append(
+        "fecha_programada",
+        this.formulario.fecha + " " + this.formulario.hora
+      );
       formdata.append("asuntos", JSON.stringify(this.agenda));
       axios
         .post("/reuniones/update", formdata)

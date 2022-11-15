@@ -9,7 +9,7 @@
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
     <link rel="icon" type="image/x-icon"
-        href="https://i.pinimg.com/originals/8a/8b/50/8a8b50da2bc4afa933718061fe291520.jpg">
+        href="{{mix('images/favicon.png')}}">
     <link rel="stylesheet" href="{{ mix('/css/app.css') }}">
 </head>
 

@@ -27,7 +27,7 @@
           >
             <thead>
               <tr>
-                <th>ID</th>
+                <th>N°</th>
                 <th>Descripción</th>
                 <th>Fecha inicio</th>
                 <th>Fecha fin</th>
@@ -37,13 +37,17 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(pago, index) in pagos" v-bind:key="pago.id" :class="[ isNaN(pago.total2) ? 'bg-green' : 'bg-red' ]">
-                <td>{{ index+1 }}</td>
+              <tr
+                v-for="(pago, index) in pagos"
+                v-bind:key="pago.id"
+                :class="[isNaN(pago.total2) ? 'bg-green' : 'bg-red']"
+              >
+                <td>{{ index + 1 }}</td>
                 <td>{{ pago.descripcion }}</td>
                 <td>{{ pago.fecha_inicio | moment("DD/MM/YYYY") }}</td>
                 <td>{{ pago.fecha_fin | moment("DD/MM/YYYY") }}</td>
                 <td>{{ pago.monto }}</td>
-                <td>{{ formatoTotal(pago.total,pago.total2)}}</td>
+                <td>{{ formatoTotal(pago.total, pago.total2) }}</td>
                 <td class="text-center">
                   <button
                     @click="vistaAsistencia(pago.id)"
@@ -74,7 +78,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">
-              {{ opcion_modal == 1 ? "Registrar" : "Editar" }} monto a cobrar
+              {{ opcion_modal == 1 ? "Nuevo" : "Editar" }} monto a cobrar
             </h5>
             <button
               class="close"
@@ -87,7 +91,7 @@
           </div>
           <div class="modal-body">
             <div class="row">
-                <div class="col-12">
+              <div class="col-12">
                 <div class="row">
                   <div class="col-12 form-group">
                     <label for="fecha_inicio">Descripción:</label>
@@ -173,12 +177,20 @@
             >
               Cancelar
             </button>
+
             <button
               v-if="opcion_modal == 1"
               @click="registrarPago()"
               class="btn btn-primary"
+              :disabled="loader"
             >
-              Registrar
+              <span
+                class="spinner-border spinner-border-sm mb-1"
+                role="status"
+                aria-hidden="true"
+                v-show="loader"
+              ></span>
+              {{ loader ? "Registrando" : "Registrar" }}
             </button>
             <button v-else @click="editarColaborador()" class="btn btn-warning">
               Editar
@@ -218,14 +230,14 @@ export default {
       window.location.href = "cobranza/" + id;
     },
 
-    formatoTotal(total, total2){
-        if(isNaN(total2)){
-            return total+'/'+total;
-        }else{
-            console.log(total)
-            console.log(total2)
-            return (total-total2) +'/'+total;
-        }
+    formatoTotal(total, total2) {
+      if (isNaN(total2)) {
+        return total + "/" + total;
+      } else {
+        console.log(total);
+        console.log(total2);
+        return total - total2 + "/" + total;
+      }
     },
 
     iniciarFormulario() {
@@ -271,7 +283,7 @@ export default {
       $("#registerModal").modal("show");
     },
 
-    listarPagos: function () {
+    listarPagos: async function () {
       axios
         .get("/cobranza/list")
         .then((response) => {
@@ -284,6 +296,7 @@ export default {
     },
 
     registrarPago: function () {
+      this.loader = true;
       const formdata = new FormData();
       formdata.append("descripcion", this.formulario.descripcion);
       formdata.append("fecha_inicio", this.formulario.fecha_inicio);
@@ -296,10 +309,12 @@ export default {
           this.iniciarFormulario();
           this.listarPagos();
           this.mostrarAlerta();
+          this.loader = false;
+          this.iniciarTabla();
         })
         .catch((error) => {
           this.errores = error.response.data.errors;
-          console.log(error.response.data);
+          this.loader = false;
         });
     },
 

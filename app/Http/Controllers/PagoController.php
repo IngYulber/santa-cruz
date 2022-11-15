@@ -25,12 +25,14 @@ class PagoController extends Controller
                                     ->where('detalle_pagos.estado', 0)
                                     ->groupBy('id_pago')
                                     ->orderBy('pago.estado','asc')
+                                    ->orderBy('pago.fecha_fin','asc')
                                     ->get();
 
         $cuentas_deudas2 = DetallePago::join('pago', 'pago.id', '=', 'id_pago')
                                     ->select('pago.*', DB::raw('COUNT(id_pago) as total'))
                                     ->groupBy('id_pago')
                                     ->orderBy('pago.estado','asc')
+                                    ->orderBy('pago.fecha_fin','asc')
                                     ->get();
 
         foreach ($cuentas_deudas as $item) {

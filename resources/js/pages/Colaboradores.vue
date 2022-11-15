@@ -39,7 +39,9 @@
               <tr
                 v-for="colaborador in colaboradores"
                 v-bind:key="colaborador.id"
-                :class="[colaborador.estado == 'deshabilitado' ? 'bg-red' : 'bg-green']"
+                :class="[
+                  colaborador.estado == 'deshabilitado' ? 'bg-red' : 'bg-green',
+                ]"
               >
                 <td>{{ colaborador.id }}</td>
                 <td>{{ colaborador.nombre }}</td>
@@ -93,7 +95,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">
-              {{ opcion_modal == 1 ? "Registrar" : "Editar" }} colaborador
+              {{ opcion_modal == 1 ? "Nuevo" : "Editar" }} colaborador
             </h5>
             <button
               class="close"
@@ -175,8 +177,15 @@
               v-if="opcion_modal == 1"
               @click="registrarColaborador()"
               class="btn btn-primary"
+              :disabled="loader"
             >
-              Registrar
+              <span
+                class="spinner-border spinner-border-sm mb-1"
+                role="status"
+                aria-hidden="true"
+                v-show="loader"
+              ></span>
+              {{ loader ? "Registrando" : "Registrar" }}
             </button>
             <button v-else @click="editarColaborador()" class="btn btn-warning">
               Editar
@@ -256,7 +265,7 @@ export default {
       $("#registerModal").modal("show");
     },
 
-    listarColaboradores: function () {
+    listarColaboradores: async function () {
       axios
         .get("/colaboradores/list")
         .then((response) => {
@@ -269,6 +278,7 @@ export default {
     },
 
     registrarColaborador: function () {
+      this.loader = true;
       const formdata = new FormData();
       formdata.append("nombre", this.formulario.nombre);
       formdata.append("apellido", this.formulario.apellido);
@@ -282,10 +292,12 @@ export default {
           this.iniciarFormulario();
           this.listarColaboradores();
           this.mostrarAlerta();
+          this.iniciarTabla();
+          this.loader = false;
         })
         .catch((error) => {
           this.errores = error.response.data.errors;
-          console.log(error.response.data);
+          this.loader = false;
         });
     },
 
