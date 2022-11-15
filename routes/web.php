@@ -73,11 +73,13 @@ Route::group(['middleware' => ['auth']], function(){
     Route::group(['prefix' => 'perfil'], function () {
         Route::get('/', [UserController::class, 'create'])->name('create-perf');
         Route::get('/info', [UserController::class, 'index'])->name('list-perf');
-        Route::post('/store', [SancionController::class, 'store'])->name('store-perf');
-        Route::post('/update', [SancionController::class, 'update'])->name('update-perf');
+        Route::post('/store', [UserController::class, 'store'])->name('store-perf');
+        Route::post('/update', [UserController::class, 'update'])->name('update-perf');
+        Route::post('/update-password', [UserController::class, 'updatePassword'])->name('change-password');
     });
 
     Route::group(['prefix' => 'reportes'], function () {
         Route::get('/', [UtilsController::class, 'reportesView'])->name('reportes');
+        Route::post('/make', [UtilsController::class, 'generarReporte'])->name('nuevo-reporte');
     });
 });

@@ -5,26 +5,25 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Inicio de sesión</title>
-    <link rel="icon" type="image/x-icon" href="https://i.pinimg.com/originals/8a/8b/50/8a8b50da2bc4afa933718061fe291520.jpg">
+    <link rel="icon" type="image/x-icon" href="{{mix('images/favicon.png')}}">
     <link rel="stylesheet" href="{{mix('css/app.css')}}">
 </head>
 
 <body class="bg-gradient-light">
         <div class="container">
             <!-- Outer Row -->
-            <div class="row justify-content-center">
+            <div class="row justify-content-center pt-5">
 
-                <div class="col-xl-10 col-lg-12 col-md-9">
+                <div class="col-xl-6 col-lg-8 col-md-8">
 
                     <div class="card o-hidden border-0 shadow-lg my-5">
                         <div class="card-body p-0">
                             <!-- Nested Row within Card Body -->
                             <div class="row">
-                                <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-12">
                                     <div class="p-5">
                                         <div class="text-center">
-                                            <h1 class="h4 text-gray-900 mb-4">E.T.M. Santa Cruz de Huachipa S.A.C</h1>
+                                            <h1 class="h4 text-gray-900 mb-4">Santa cruz de huachipa S.A.C</h1>
                                         </div>
                                         <form class="user" method="POST" action="{{url('login')}}">
                                             @csrf

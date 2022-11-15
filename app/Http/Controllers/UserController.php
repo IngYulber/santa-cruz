@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\User\CreateRequest;
 use App\Http\Requests\User\UpdateRequest;
+use App\Http\Requests\User\UpdatePassword;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Request;
@@ -43,7 +44,7 @@ class UserController extends Controller
 
     public function update(UpdateRequest $request)
     {
-        $user = User::where('id', $request->id)->get()->first();
+        $user = User::where('id', auth()->user()->id)->get()->first();
         try {
             DB::beginTransaction();
 
@@ -62,6 +63,16 @@ class UserController extends Controller
             DB::rollBack();
             throw $th;
         }
+    }
+
+    public function updatePassword(UpdatePassword $request){
+        $contra = $request->password;
+        $id = auth()->user()->id;
+
+        $user = User::where('id', $id)->get()->first();
+        $user->password = $contra;
+        $user->save();
+
     }
 
     public function status(Request $request)

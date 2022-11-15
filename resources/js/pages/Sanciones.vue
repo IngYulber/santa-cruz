@@ -72,7 +72,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">
-              {{ opcion_modal == 1 ? "Registrar" : "Editar" }} sanción
+              {{ opcion_modal == 1 ? "Nueva" : "Editar" }} sanción
             </h5>
             <button
               class="close"
@@ -145,24 +145,6 @@
                       {{ errores.dias_sancion[0] }}
                     </div>
                   </div>
-                  <!-- <div class="col-6 form-group">
-                    <label for="apellido">Hora:</label>
-                    <input
-                      type="time"
-                      :class="[
-                        'form-control',
-                        errores.fecha_programada ? 'is-invalid' : '',
-                      ]"
-                      v-model="formulario.hora"
-                      id="apellido"
-                    />
-                    <div
-                      v-if="errores.fecha_programada"
-                      class="invalid-feedback"
-                    >
-                      {{ errores.fecha_programada[0] }}
-                    </div>
-                  </div> -->
                 </div>
               </div>
             </div>
@@ -179,8 +161,15 @@
               v-if="opcion_modal == 1"
               @click="registrarSancion()"
               class="btn btn-primary"
+              :disabled="loader"
             >
-              Registrar
+              <span
+                class="spinner-border spinner-border-sm mb-1"
+                role="status"
+                aria-hidden="true"
+                v-show="loader"
+              ></span>
+              {{ loader ? "Registrando" : "Registrar" }}
             </button>
             <button v-else @click="editarSancion()" class="btn btn-warning">
               Editar
@@ -255,7 +244,7 @@ export default {
       $("#registerModal").modal("show");
     },
 
-    listarSanciones: function () {
+    listarSanciones: async function () {
       axios
         .get("/sanciones/list")
         .then((response) => {
@@ -276,7 +265,6 @@ export default {
             id: colabordor.id,
             label: colabordor.nombre + " " + colabordor.apellido,
           }));
-          console.log(this.colaboradores);
         })
         .catch((error) => {
           console.log(error);
@@ -284,7 +272,7 @@ export default {
     },
 
     registrarSancion: function () {
-    console.log(this.formulario.id_colaborador)
+      this.loader = true;
       const formdata = new FormData();
       formdata.append("id_colaborador", this.formulario.id_colaborador);
       formdata.append("motivo", this.formulario.motivo);
@@ -296,10 +284,12 @@ export default {
           this.iniciarFormulario();
           this.mostrarAlerta();
           this.listarSanciones();
+          this.iniciarTabla();
+          this.loader = false;
         })
         .catch((error) => {
           this.errores = error.response.data.errors;
-          console.log(error.response.data);
+          this.loader = false;
         });
     },
 
