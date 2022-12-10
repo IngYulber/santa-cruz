@@ -24,8 +24,8 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'description' => 'required',
-            'fecha_programada' => 'required',
+            'description' => 'required|min:5',
+            'fecha_programada' => 'required|date_format:Y-m-d H:i|after:2020/01/01',
             'asuntos' => 'required'
         ];
     }
@@ -34,7 +34,10 @@ class CreateRequest extends FormRequest
     {
         return [
             'description.required' => 'Ingrese la descripción',
+            'description.min' => 'La descripción debe tener al menos 5 caracteres',
             'fecha_programada.required' => 'ingrese la fecha',
+            'fecha_programada.date_format' => 'ingrese la hora',
+            'fecha_programada.after' => 'La fecha debe ser a partir del  2022',
             'asuntos.required' => 'Ingrese los asuntos'
         ];
     }

@@ -1,6 +1,6 @@
 @extends('template.masterLayout')
 
-@section('title', 'Reuniones')
+@section('title', 'Sanciones')
 
 @section('content')
 <sanciones></sanciones>

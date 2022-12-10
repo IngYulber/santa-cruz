@@ -31,7 +31,7 @@
                 <th>ID</th>
                 <th>Nombres</th>
                 <th>Apellidos</th>
-                <th>Dni</th>
+                <th>Documento I.</th>
                 <th>Opciones</th>
               </tr>
             </thead>
@@ -149,7 +149,7 @@
               <div class="col-12">
                 <div class="row">
                   <div class="col-12 form-group">
-                    <label for="dni">DNI:</label>
+                    <label for="dni">Documento de Identidad:</label>
                     <input
                       type="text"
                       :class="['form-control', errores.dni ? 'is-invalid' : '']"
@@ -315,6 +315,7 @@ export default {
           this.mostrarAlerta();
         })
         .catch((error) => {
+          this.errores = error.response.data.errors;
           console.log(error.response.data);
         });
     },

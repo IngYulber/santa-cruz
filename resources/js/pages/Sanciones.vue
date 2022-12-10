@@ -102,7 +102,7 @@
                         v-bind:value="colaborador.id"
                         v-bind:key="colaborador.id"
                       >
-                        {{ colaborador.label }}
+                        {{ colaborador.nombre + " " + colaborador.apellido }}
                       </option>
                     </select>
                     <div v-if="errores.id_colaborador" class="invalid-feedback">
@@ -261,10 +261,11 @@ export default {
         .get("/colaboradores/list")
         .then((response) => {
           this.colaboradores = response.data.data;
-          this.colaboradores = this.colaboradores.map((colabordor) => ({
-            id: colabordor.id,
-            label: colabordor.nombre + " " + colabordor.apellido,
-          }));
+          this.colaboradores = this.colaboradores.filter((colaborador) => {
+            if (colaborador.estado != "deshabilitado") {
+              return colaborador;
+            }
+          });
         })
         .catch((error) => {
           console.log(error);
@@ -307,6 +308,7 @@ export default {
           this.listarSanciones();
         })
         .catch((error) => {
+          this.errores = error.response.data.errors;
           console.log(error.response.data);
         });
     },

@@ -373,6 +373,7 @@ export default {
           this.listarReuniones();
         })
         .catch((error) => {
+            this.errores = error.response.data.errors;
           console.log(error.response.data);
         });
     },

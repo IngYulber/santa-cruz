@@ -44,9 +44,9 @@ class ReunionController extends Controller
     {
         $reunion = Reunion::create($request->validated());
 
-        $colaborador = Colaborador::all();
+        $colaboradores = Colaborador::whereIn('estado',['habilitado','suspendido'])->get();
 
-        foreach ($colaborador as $user) {
+        foreach ($colaboradores as $user) {
             $detail = new Asistencia();
             $detail->id_colaborador  = $user->id;
             $detail->id_reunion  = $reunion->id;
@@ -94,7 +94,7 @@ class ReunionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(CreateRequest $request)
     {
         $reunion = Reunion::where('id', $request->get('id'))->get()->first();
         try {

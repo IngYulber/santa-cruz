@@ -32,7 +32,7 @@ class LoginRequest extends FormRequest
     public function messages()
     {
         return [
-            'dni.required' => 'Ingrese el dni',
+            'dni.required' => 'Ingrese el documento de identidad',
             'password.required' => 'Ingrese la contraseña'
         ];
     }
