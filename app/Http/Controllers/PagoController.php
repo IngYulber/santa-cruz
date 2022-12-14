@@ -67,9 +67,9 @@ class PagoController extends Controller
     {
         $pago = Pago::create($request->validated());
 
-        $users = Colaborador::all();
+        $colaboradores = Colaborador::whereIn('estado',['habilitado','suspendido'])->get();
 
-        foreach ($users as $user) {
+        foreach ($colaboradores as $user) {
             $detail = new DetallePago();
             $detail->id_colaborador = $user->id;
             $detail->id_pago = $pago->id;

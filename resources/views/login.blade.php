@@ -39,7 +39,7 @@
                                             <div class="form-group">
                                                 <input type="text" class="form-control form-control-user"
                                                     id="exampleInputEmail" name="dni" aria-describedby="emailHelp"
-                                                    placeholder="DNI">
+                                                    placeholder="Documento de Identidad">
                                             </div>
                                             <div class="form-group">
                                                 <input type="password" class="form-control form-control-user"

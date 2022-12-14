@@ -105,12 +105,18 @@
                         <label class="form-label" for="name">Nombre:</label>
                         <div class="input-group input-group-merge">
                           <input
-                            class="form-control"
+                            :class="[
+                              'form-control',
+                              errores.nombre ? 'is-invalid' : '',
+                            ]"
                             type="text"
                             v-model="user.nombre"
                             :disabled="!nuevosCambios"
                             placehconf_paser="············"
                           />
+                          <div v-if="errores.nombre" class="invalid-feedback">
+                            {{ errores.nombre[0] }}
+                          </div>
                         </div>
                       </div>
 
@@ -120,12 +126,18 @@
                         >
                         <div class="input-group input-group-merge">
                           <input
-                            class="form-control"
+                            :class="[
+                              'form-control',
+                              errores.apellido ? 'is-invalid' : '',
+                            ]"
                             type="text"
                             v-model="user.apellido"
                             :disabled="!nuevosCambios"
                             placehconf_paser="············"
                           />
+                          <div v-if="errores.apellido" class="invalid-feedback">
+                            {{ errores.apellido[0] }}
+                          </div>
                         </div>
                       </div>
 
@@ -133,11 +145,17 @@
                         <label class="form-label" for="email">Dni:</label>
                         <div class="input-group input-group-merge">
                           <input
-                            class="form-control"
+                            :class="[
+                              'form-control',
+                              errores.dni ? 'is-invalid' : '',
+                            ]"
                             type="email"
                             v-model="user.dni"
                             :disabled="!nuevosCambios"
                           />
+                          <div v-if="errores.dni" class="invalid-feedback">
+                            {{ errores.dni[0] }}
+                          </div>
                         </div>
                       </div>
                       <div class="mt-3 col-md-12">
@@ -193,7 +211,10 @@
                           "
                         >
                           <input
-                            class="form-control"
+                            :class="[
+                              'form-control',
+                              errores.password ? 'is-invalid' : '',
+                            ]"
                             :type="pass_1 ? 'password' : 'text'"
                             v-model="contra_1"
                           />
@@ -203,6 +224,9 @@
                           >
                             <fa :icon="pass_1 ? 'eye' : 'eye-slash'" />
                           </span>
+                          <div v-if="errores.password" class="invalid-feedback">
+                            {{ errores.password[0] }}
+                          </div>
                         </div>
                       </div>
 
@@ -262,6 +286,7 @@ export default {
       nuevosCambios: false,
       opcion_menu: 0,
       pass_1: true,
+      errores: {},
       pass_2: true,
       contra_1: "",
       contra_2: "",
@@ -304,17 +329,19 @@ export default {
             timer: 1500,
           });
           this.nuevosCambios = false;
+          this.errores = {};
         })
         .catch((error) => {
           console.log(error);
+          this.errores = error.response.data.errors;
         });
     },
 
     async cambiarContra() {
-      //   if (this.contra_1 != this.contra_2) {
-      //     alert("Las contraseñas no son iguales");
-      //     return;
-      //   }
+      if (this.contra_1 != this.contra_2) {
+        alert("Las contraseñas no son iguales");
+        return;
+      }
 
       const formdata = new FormData();
       formdata.append("password", this.contra_1);
@@ -329,8 +356,11 @@ export default {
             showConfirmButton: false,
             timer: 1500,
           });
+          this.contra_1 = "";
+          this.contra_2 = "";
         })
         .catch((error) => {
+          this.errores = error.response.data.errors;
           console.log(error);
         });
     },

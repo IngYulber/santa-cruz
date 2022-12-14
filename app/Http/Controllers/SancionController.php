@@ -74,7 +74,7 @@ class SancionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(CreateRequest $request)
     {
 
         $sancion = Sancion::where('id', $request->get('id'))->get()->first();
