@@ -20,7 +20,7 @@
                   <p class="mt-3">Deudas</p>
                 </div>
               </div>
-              <!-- <div class="col-6 mt-2" @click="cambiarModo('colaboradores')">
+              <div class="col-6 mt-2" @click="cambiarModo('colaboradores')">
                 <div
                   :class="[
                     'card card-body text-center',
@@ -32,8 +32,8 @@
                   <fa icon="users" style="font-size: 2rem" />
                   <p class="mt-3">Colaboradores</p>
                 </div>
-              </div> -->
-              <!-- <div class="col-6 mt-2" @click="cambiarModo('reuniones')">
+              </div>
+              <div class="col-6 mt-2" @click="cambiarModo('reuniones')">
                 <div
                   :class="[
                     'card card-body text-center',
@@ -58,7 +58,7 @@
                   <fa icon="ban" style="font-size: 2rem" />
                   <p class="mt-3">Sanciones</p>
                 </div>
-              </div> -->
+              </div>
             </div>
           </div>
           <div class="col-xl-4 col-md-8 col-sm-10">
